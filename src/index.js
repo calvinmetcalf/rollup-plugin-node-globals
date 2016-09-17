@@ -27,8 +27,8 @@ var _mods2 = {
   process: PROCESS_PATH,
   Buffer: [BUFFER_PATH, 'Buffer'],
   global: GLOBAL_PATH,
-  __filename: '__filename',
-  __dirname: '__dirname'
+  __filename: '\0__filename',
+  __dirname: '\0__dirname'
 };
 var mods1 = new Map();
 var mods2 = new Map();
@@ -60,12 +60,12 @@ export default options => {
       }
     },
     resolveId(importee, importer) {
-      if (importee === '__dirname') {
+      if (importee === '\0__dirname') {
         let id = randomBytes(15).toString('hex');
         dirs.set(id, dirname('/' + relative(basedir, importer)));
         return id;
       }
-      if (importee === '__filename') {
+      if (importee === '\0__filename') {
         let id = randomBytes(15).toString('hex');
         dirs.set(id, '/' + relative(basedir, importer));
         return id;

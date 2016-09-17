@@ -1,5 +1,6 @@
 
 var rollup = require( 'rollup' );
+var nodeResolve = require( 'rollup-plugin-node-resolve' );
 var globals = require( '../dist/rollup-plugin-node-globals.cjs' );
 var path = require('path');
 var vm = require('vm');
@@ -44,4 +45,26 @@ describe( 'rollup-plugin-node-globals', function () {
 		});
 	});
 })
+
+  it( 'works with rollup-plugin-node-resolve', function () {
+    return rollup.rollup({
+      entry: 'test/examples/dirname.js',
+      plugins: [
+        nodeResolve(),
+        globals()
+      ]
+    }).then( function ( bundle ) {
+      var generated = bundle.generate();
+      var code = generated.code;
+      var script = new vm.Script(code);
+      var context = vm.createContext({
+        dirname: path.join(__dirname, 'examples'),
+        filename: path.join(__dirname, 'examples', 'dirname.js'),
+        setTimeout: setTimeout,
+        clearTimeout: clearTimeout,
+      });
+      context.self = context;
+      script.runInContext(context);
+    });
+  });
 });

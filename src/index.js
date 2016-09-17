@@ -7,6 +7,9 @@ const PROCESS_PATH = require.resolve('process-es6');
 const BUFFER_PATH = require.resolve('buffer-es6');
 const GLOBAL_PATH = join(__dirname, '..', 'src', 'global.js');
 
+const DIRNAME = '\0node-globals:dirname';
+const FILENAME = '\0node-globals:filename';
+
 function clone(obj) {
   var out = {};
   Object.keys(obj).forEach(function(key) {
@@ -27,8 +30,8 @@ var _mods2 = {
   process: PROCESS_PATH,
   Buffer: [BUFFER_PATH, 'Buffer'],
   global: GLOBAL_PATH,
-  __filename: '\0__filename',
-  __dirname: '\0__dirname'
+  __filename: FILENAME,
+  __dirname: DIRNAME
 };
 var mods1 = new Map();
 var mods2 = new Map();
@@ -60,12 +63,12 @@ export default options => {
       }
     },
     resolveId(importee, importer) {
-      if (importee === '\0__dirname') {
+      if (importee === DIRNAME) {
         let id = randomBytes(15).toString('hex');
         dirs.set(id, dirname('/' + relative(basedir, importer)));
         return id;
       }
-      if (importee === '\0__filename') {
+      if (importee === FILENAME) {
         let id = randomBytes(15).toString('hex');
         dirs.set(id, '/' + relative(basedir, importer));
         return id;

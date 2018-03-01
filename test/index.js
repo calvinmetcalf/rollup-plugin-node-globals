@@ -19,7 +19,7 @@ describe( 'rollup-plugin-node-globals', function () {
   files.forEach(function (file) {
 	it( 'works with ' + file, function () {
 		return rollup.rollup({
-			entry: 'test/examples/' + file,
+			input: 'test/examples/' + file,
 			plugins: [
         {
           resolveId: function (importee){
@@ -30,8 +30,8 @@ describe( 'rollup-plugin-node-globals', function () {
         },
 				globals()
 			]
-		}).then( function ( bundle ) {
-			var generated = bundle.generate();
+		}).then( async function ( bundle ) {
+			var generated = await bundle.generate({format: 'es'});
 			var code = generated.code;
       console.log(code);
       var script = new vm.Script(code);
@@ -45,17 +45,17 @@ describe( 'rollup-plugin-node-globals', function () {
 			script.runInContext(context);
 		});
 	});
-})
+});
 
   it( 'works with rollup-plugin-node-resolve', function () {
     return rollup.rollup({
-      entry: 'test/examples/dirname.js',
+      input: 'test/examples/dirname.js',
       plugins: [
         nodeResolve(),
         globals()
       ]
-    }).then( function ( bundle ) {
-      var generated = bundle.generate();
+    }).then( async function ( bundle ) {
+      var generated = await bundle.generate({format: "es"});
       var code = generated.code;
       var script = new vm.Script(code);
       var context = vm.createContext({

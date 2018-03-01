@@ -56,7 +56,7 @@ export default function(code, id, mod1, mod2, sourceMap) {
 
   try {
     ast = parse(code, {
-      ecmaVersion: 6,
+      ecmaVersion: 8,
       sourceType: 'module'
     });
   } catch (err) {
@@ -103,7 +103,7 @@ export default function(code, id, mod1, mod2, sourceMap) {
       }
 
       if (name !== keypath) {
-        magicString.overwrite(node.start, node.end, importLocalName, true);
+        magicString.overwrite(node.start, node.end, importLocalName, {storeName: true});
       }
       if (mod1.has(keypath)) {
         node.__handled = true;

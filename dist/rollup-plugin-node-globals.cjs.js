@@ -67,12 +67,12 @@ function flatten(node) {
   };
 }
 
-var inject = function (code, id, mod1, mod2, sourceMap) {
+function inject (code, id, mod1, mod2, sourceMap) {
   var ast = void 0;
 
   try {
     ast = acorn.parse(code, {
-      ecmaVersion: 6,
+      ecmaVersion: 8,
       sourceType: 'module'
     });
   } catch (err) {
@@ -120,7 +120,7 @@ var inject = function (code, id, mod1, mod2, sourceMap) {
       }
 
       if (name !== keypath) {
-        magicString.overwrite(node.start, node.end, importLocalName, true);
+        magicString.overwrite(node.start, node.end, importLocalName, { storeName: true });
       }
       if (mod1.has(keypath)) {
         node.__handled = true;
@@ -170,7 +170,7 @@ var inject = function (code, id, mod1, mod2, sourceMap) {
     code: magicString.toString(),
     map: sourceMap ? magicString.generateMap() : null
   };
-};
+}
 
 var PROCESS_PATH = require.resolve('process-es6');
 var BUFFER_PATH = require.resolve('buffer-es6');

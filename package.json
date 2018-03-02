@@ -12,31 +12,32 @@
   "scripts": {
     "test": "mocha",
     "pretest": "npm run build",
-    "build": "rollup -c -f cjs -o dist/rollup-plugin-node-globals.cjs.js && rollup -c -f es6 -o dist/rollup-plugin-node-globals.es6.js",
+    "build": "rollup -c -f cjs -o dist/rollup-plugin-node-globals.cjs.js && rollup -c -f es -o dist/rollup-plugin-node-globals.es6.js",
     "prebuild": "rimraf dist && mkdirp dist"
   },
   "author": "Calvin Metcalf <calvin.metcalf@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "acorn": "^4.0.1",
-    "buffer-es6": "^4.9.1",
-    "estree-walker": "^0.2.1",
-    "magic-string": "^0.16.0",
-    "process-es6": "^0.11.3",
-    "rollup-pluginutils": "^1.5.2"
+    "acorn": "^5.5.0",
+    "buffer-es6": "^4.9.3",
+    "estree-walker": "^0.5.1",
+    "magic-string": "^0.22.4",
+    "process-es6": "^0.11.6",
+    "rollup-pluginutils": "^2.0.1"
   },
   "keywords": [
     "rollup-plugin"
   ],
   "devDependencies": {
-    "babel-preset-es2015-rollup": "^1.1.1",
-    "browserify": "^13.0.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-es2015-rollup": "^3.0.0",
+    "browserify": "^16.1.0",
     "mkdirp": "^0.5.1",
-    "mocha": "^2.4.5",
-    "rimraf": "^2.5.4",
-    "rollup": "^0.36.0",
-    "rollup-plugin-babel": "^2.4.0",
-    "rollup-plugin-node-resolve": "^2.0.0"
+    "mocha": "^5.0.1",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.56.3",
+    "rollup-plugin-babel": "^3.0.3",
+    "rollup-plugin-node-resolve": "^3.0.3"
   },
   "repository": {
     "type": "git",

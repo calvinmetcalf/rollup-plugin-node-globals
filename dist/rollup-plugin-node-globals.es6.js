@@ -2,7 +2,7 @@ import { attachScopes, createFilter } from 'rollup-pluginutils';
 import { walk } from 'estree-walker';
 import { parse } from 'acorn';
 import MagicString from 'magic-string';
-import { dirname, join, relative } from 'path';
+import { join, relative, dirname } from 'path';
 import { randomBytes } from 'crypto';
 
 var reservedWords = 'break case class catch const continue debugger default delete do else export extends finally for function if import in instanceof let new return super switch this throw try typeof var void while with yield enum await implements package protected static interface private public'.split(' ');
@@ -63,12 +63,12 @@ function flatten(node) {
   };
 }
 
-var inject = function (code, id, mod1, mod2, sourceMap) {
+function inject (code, id, mod1, mod2, sourceMap) {
   var ast = void 0;
 
   try {
     ast = parse(code, {
-      ecmaVersion: 6,
+      ecmaVersion: 8,
       sourceType: 'module'
     });
   } catch (err) {
@@ -116,7 +116,7 @@ var inject = function (code, id, mod1, mod2, sourceMap) {
       }
 
       if (name !== keypath) {
-        magicString.overwrite(node.start, node.end, importLocalName, true);
+        magicString.overwrite(node.start, node.end, importLocalName, { storeName: true });
       }
       if (mod1.has(keypath)) {
         node.__handled = true;
@@ -166,7 +166,7 @@ var inject = function (code, id, mod1, mod2, sourceMap) {
     code: magicString.toString(),
     map: sourceMap ? magicString.generateMap() : null
   };
-};
+}
 
 var PROCESS_PATH = require.resolve('process-es6');
 var BUFFER_PATH = require.resolve('buffer-es6');

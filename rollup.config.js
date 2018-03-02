@@ -6,7 +6,7 @@ var external = Object.keys( require( './package.json' ).dependencies ).concat(
 );
 
 export default {
-	entry: 'src/index.js',
+	input: 'src/index.js',
 	plugins: [ babel() ],
 	external: external
 };

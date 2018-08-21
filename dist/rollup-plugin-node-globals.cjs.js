@@ -4,7 +4,6 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var rollupPluginutils = require('rollup-pluginutils');
 var estreeWalker = require('estree-walker');
-var acorn = require('acorn');
 var MagicString = _interopDefault(require('magic-string'));
 var path = require('path');
 var crypto = require('crypto');
@@ -67,11 +66,11 @@ function flatten(node) {
   };
 }
 
-function inject (code, id, mod1, mod2, sourceMap) {
+function inject (code, id, mod1, mod2, sourceMap, parse) {
   var ast = void 0;
 
   try {
-    ast = acorn.parse(code, {
+    ast = parse(code, {
       ecmaVersion: 8,
       sourceType: 'module'
     });
@@ -245,13 +244,13 @@ var index = (function (options) {
     },
     transform: function transform(code, id) {
       if (id === BUFFER_PATH) {
-        return inject(code, id, buf, new Map(), sourceMap);
+        return inject(code, id, buf, new Map(), sourceMap, this.parse);
       }
       if (!filter(id)) return null;
       if (code.search(firstpass) === -1) return null;
       if (id.slice(-3) !== '.js') return null;
 
-      var out = inject(code, id, mods1, mods2, sourceMap);
+      var out = inject(code, id, mods1, mods2, sourceMap, this.parse);
       return out;
     }
   };

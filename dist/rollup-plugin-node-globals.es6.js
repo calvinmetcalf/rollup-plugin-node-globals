@@ -1,6 +1,5 @@
 import { attachScopes, createFilter } from 'rollup-pluginutils';
 import { walk } from 'estree-walker';
-import { parse } from 'acorn';
 import MagicString from 'magic-string';
 import { join, relative, dirname } from 'path';
 import { randomBytes } from 'crypto';
@@ -63,7 +62,7 @@ function flatten(node) {
   };
 }
 
-function inject (code, id, mod1, mod2, sourceMap) {
+function inject (code, id, mod1, mod2, sourceMap, parse) {
   var ast = void 0;
 
   try {
@@ -241,13 +240,13 @@ var index = (function (options) {
     },
     transform: function transform(code, id) {
       if (id === BUFFER_PATH) {
-        return inject(code, id, buf, new Map(), sourceMap);
+        return inject(code, id, buf, new Map(), sourceMap, this.parse);
       }
       if (!filter(id)) return null;
       if (code.search(firstpass) === -1) return null;
       if (id.slice(-3) !== '.js') return null;
 
-      var out = inject(code, id, mods1, mods2, sourceMap);
+      var out = inject(code, id, mods1, mods2, sourceMap, this.parse);
       return out;
     }
   };

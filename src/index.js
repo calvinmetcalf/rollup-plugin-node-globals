@@ -1,5 +1,5 @@
 import inject from './inject/index';
-import { join, relative, dirname } from 'path';
+import { join, relative, dirname, extname } from 'path';
 import {randomBytes} from 'crypto';
 import {createFilter} from 'rollup-pluginutils';
 
@@ -78,6 +78,7 @@ export default function nodeGlobals(options) {
   const exclude = (opts.exclude || []).concat(GLOBAL_PATH);
   const filter = createFilter(options.include, exclude);
   const sourceMap = options.sourceMap !== false;
+  const extensions = options.extensions || ['.js'];
 
   const { mods1, mods2, firstpass } = getMods(options);
 
@@ -106,9 +107,14 @@ export default function nodeGlobals(options) {
       if (id === BUFFER_PATH) {
         return inject(code, id, buf, new Map(), sourceMap);
       }
-      if (!filter(id)) return null;
-      if (code.search(firstpass) === -1) return null;
-      if (id.slice(-3) !== '.js') return null;
+
+      if (
+        !filter(id) ||
+        extensions.indexOf(extname(id)) === -1 ||
+        code.search(firstpass) === -1
+      ) {
+        return null;
+      }
 
       var out = inject(code, id, mods1, mods2, sourceMap);
       return out;

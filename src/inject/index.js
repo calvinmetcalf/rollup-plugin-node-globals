@@ -4,9 +4,7 @@ import {
 import {
   walk
 } from 'estree-walker';
-import {
-  parse
-} from 'acorn';
+
 import makeLegalIdentifier from './makeLegalIdentifier';
 import MagicString from 'magic-string';
 
@@ -51,7 +49,7 @@ function flatten(node) {
 }
 
 
-export default function(code, id, mod1, mod2, sourceMap) {
+export default function(parse, code, id, mod1, mod2, sourceMap) {
   let ast;
 
   try {

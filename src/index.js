@@ -104,13 +104,13 @@ export default function nodeGlobals(options) {
     },
     transform(code, id) {
       if (id === BUFFER_PATH) {
-        return inject(code, id, buf, new Map(), sourceMap);
+        return inject(this.parse, code, id, buf, new Map(), sourceMap);
       }
       if (!filter(id)) return null;
       if (code.search(firstpass) === -1) return null;
       if (id.slice(-3) !== '.js') return null;
 
-      var out = inject(code, id, mods1, mods2, sourceMap);
+      var out = inject(this.parse,code, id, mods1, mods2, sourceMap);
       return out;
     }
   }

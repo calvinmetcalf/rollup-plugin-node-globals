@@ -101,3 +101,6 @@ export default timeout$1;
 ```
 
 With that top piece only showing up once no matter how many times global was used.
+
+**NOTE: Compatibility between `rollup-plugin-node-globals` and `rollup-plugin-commonjs`**
+If you are using `rollup-plugin-commonjs`, make sure that `rollup-plugin-commonjs` comes before `rollup-plugin-node-globals`, otherwise  `rollup-plugin-commonjs` will generate wrong imports and `ReferenceError`s may arise in your final bundle.

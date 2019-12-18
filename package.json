@@ -19,7 +19,7 @@
   "author": "Calvin Metcalf <calvin.metcalf@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "acorn": "^5.7.3",
+    "acorn": "^7.0.0",
     "buffer-es6": "^4.9.3",
     "estree-walker": "^0.5.2",
     "magic-string": "^0.22.5",
